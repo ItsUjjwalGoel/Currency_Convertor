@@ -1,8 +1,0 @@
-.custom-select {
-    height: 40px; /* Adjust the height of the select box */
-    font-size: 16px; /* Adjust font size */
-}
-
-.custom-select option {
-    height: 30px; /* This may not work in all browsers */
-}
