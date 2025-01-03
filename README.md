@@ -1,70 +1,116 @@
-# Getting Started with Create React App
+# Currency Converter Application 🌍💱
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A **Currency Converter** application built using **React.js** and **Axios**, which leverages the Fixer.io API to fetch live exchange rates. The app allows users to convert an amount between selected currencies, swap currencies, and reset the input seamlessly.
 
-## Available Scripts
+## Features ✨
+- **Live Exchange Rates:** Fetch real-time currency exchange rates from the Fixer.io API.
+- **Amount Conversion:** Enter an amount in one currency and get the converted value in another.
+- **Swap Currencies:** Easily swap the base and target currencies with a single button.
+- **Keyboard Shortcuts:**
+  - `Ctrl + S`: Swap currencies.
+  - `Ctrl + R`: Reset the values.
+- **Responsive Design:** User-friendly and accessible interface with a clean, responsive layout.
+- **External Links:** Direct links to GitHub and LinkedIn profiles for further exploration.
 
-In the project directory, you can run:
+## Demo 📸
+- Video showcasing full Project
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+https://github.com/user-attachments/assets/61c1fb36-fa92-4a29-bb91-e0717e953d51
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Setup Instructions ⚙️
 
-### `npm run build`
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/<your-username>/<repository-name>.git
+   cd <repository-name>
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. **Install Dependencies**  
+   Make sure you have **Node.js** installed, then run:  
+   ```bash
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Environment Variables**  
+   Create a `.env` file in the root directory and add your Fixer.io API key:
+   ```env
+   REACT_APP_API_KEY=your_fixer_api_key
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. **Run the Application**  
+   Start the development server:  
+   ```bash
+   npm start
+   ```
 
-### `npm run eject`
+5. **Build for Production**  
+   To create a production build, run:  
+   ```bash
+   npm run build
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## How It Works 🔧
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Fetching Exchange Rates:**  
+  The app uses Axios to fetch exchange rates from the Fixer.io API. The rates are stored in the state using React hooks.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **Conversion Logic:**  
+  The app calculates the converted amount using the formula:  
+  ```
+  convertedAmount = amount * (1 / rate[baseCurrency]) * rate[targetCurrency]
+  ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Keyboard Events:**  
+  Global keydown events are added to support swapping (`Ctrl + S`) and resetting (`Ctrl + R`) without interacting with buttons.
 
-## Learn More
+## Folder Structure 📁
+```
+src/
+│
+├── components/
+│   ├── Input.js          // Main component for the currency converter
+│
+├── assets/
+│   ├── Githublogo.png    // GitHub logo for linking
+│   ├── Linkedin.png      // LinkedIn logo for linking
+│
+├── App.js                // Main App component
+├── index.js              // Entry point of the application
+└── .env                  // Environment variables
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Dependencies 📦
+- **React.js:** Frontend framework.
+- **Axios:** For API requests.
+- **Fixer.io API:** Fetch live exchange rates.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How to Use 💛
+1. Enter the amount you want to convert in the **Amount** input field.
+2. Select the base and target currencies from the dropdowns.
+3. The converted amount will be displayed in the **Converted Amount** field.
+4. Use the **Swap** button or `Ctrl + S` to swap the currencies.
+5. Use the **Home** button or `Ctrl + R` to reset the input fields.
 
-### Code Splitting
+## Keyboard Shortcuts ⌨️
+- **Ctrl + S:** Swap currencies.
+- **Ctrl + R:** Reset all inputs.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## External Links 🌐
+- [GitHub Profile](https://github.com/ItsUjjwalGoel)
+- [LinkedIn Profile](https://linkedin.com/in/its-ujjwal)
 
-### Analyzing the Bundle Size
+## Acknowledgments 🎉
+- [Fixer.io](https://fixer.io) for providing exchange rate data.
+- [React.js](https://reactjs.org/) for making development seamless.
+- [Tailwind CSS](https://tailwindcss.com/) for styling.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## License 🖍️
+This project is licensed under the MIT License. Feel free to use it for personal and commercial purposes.
 
-### Making a Progressive Web App
+---
+##Open for Suggestions 💬
+-If you have any ideas to improve this project or want to report issues, feel free to open an issue or submit a pull request. Contributions are welcome!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
