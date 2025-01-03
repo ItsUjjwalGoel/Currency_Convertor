@@ -3,33 +3,28 @@ import axios from 'axios';
 import GitHub from './Githublogo.png';
 import Linkedin from './Linkedin.png'
 function Input() {
-    const [selectCurrency, setselectcurrency] = useState('USD');
-    const [selectCurrencyintoconverted, setselectCurrencyintoconverted] = useState('EUR');
-    const [amount, setamount] = useState(0);
-    const [amountvalue, setamountvalue] = useState(0);
+    const apiKey = process.env.REACT_APP_API_KEY;
+
+    const [selectCurrency, setSelectCurrency] = useState('USD');
+    const [selectCurrencyIntoConverted, setSelectCurrencyIntoConverted] = useState('EUR');
+    const [amount, setAmount] = useState(0);
+    const [amountValue, setAmountValue] = useState(0);
     const [exchangeRates, setExchangeRates] = useState({});
 
     // Fetch the currency data from the API
     useEffect(() => {
         const fetchExchangeRates = async () => {
             try {
-                const response = await axios.get('https://api.currencyapi.com/v3/latest?apikey=cur_live_fAs7RC4hiLbYMZnnyjSg6mMyHlDJG79jmKHFWeXt');
-                const data = response.data.data;
+                const response = await axios.get(
+                    `http://data.fixer.io/api/latest?access_key=${apiKey}`
+                );
+                const { rates } = response.data;
 
-                // Transform the data into the nested object format
-                const transformedRates = {};
-
-                Object.keys(data).forEach((baseCurrency) => {
-                    transformedRates[baseCurrency] = {};
-                    Object.keys(data).forEach((targetCurrency) => {
-                        if (baseCurrency !== targetCurrency) {
-                            // Calculate the exchange rate between the currencies
-                            transformedRates[baseCurrency][targetCurrency] = data[targetCurrency].value / data[baseCurrency].value;
-                        }
-                    });
-                });
-
-                setExchangeRates(transformedRates);
+                if (rates) {
+                    setExchangeRates(rates);
+                } else {
+                    console.error('Invalid API response:', response.data);
+                }
             } catch (error) {
                 console.error('Error fetching exchange rates:', error);
             }
@@ -38,40 +33,40 @@ function Input() {
         fetchExchangeRates();
     }, []);
 
-
-    const handleswap = () => {
+    const handleSwap = () => {
         let temp = selectCurrency;
-        setselectcurrency(selectCurrencyintoconverted);
-        setselectCurrencyintoconverted(temp);
+        setSelectCurrency(selectCurrencyIntoConverted);
+        setSelectCurrencyIntoConverted(temp);
     };
     const handlebutton = () => {
-        setamount(0);
-        setamountvalue(0);
+        setAmount(0);
+        setAmountValue(0);
     }
 
     useEffect(() => {
-        if (exchangeRates[selectCurrency] && exchangeRates[selectCurrency][selectCurrencyintoconverted]) {
-            setamountvalue((exchangeRates[selectCurrency][selectCurrencyintoconverted] * amount).toFixed(3));
+        if (exchangeRates[selectCurrency] && exchangeRates[selectCurrencyIntoConverted]) {
+            const baseToSelected = 1 / exchangeRates[selectCurrency]; // Convert to base currency
+            const selectedToTarget = exchangeRates[selectCurrencyIntoConverted]; // Convert to target currency
+            setAmountValue((amount * baseToSelected * selectedToTarget).toFixed(3));
         }
-    }, [amount, selectCurrency, selectCurrencyintoconverted, exchangeRates]);
-
+    }, [amount, selectCurrency, selectCurrencyIntoConverted, exchangeRates]);
 
     useEffect(() => {
-        const handle = (e) => {
+        const handleKeydown = (e) => {
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
-                handleswap();
+                handleSwap();
             }
             if (e.ctrlKey && e.key === 'r') {
-                setamount(0);
-                setamountvalue(0);
+                setAmount(0);
+                setAmountValue(0);
             }
         };
-        window.addEventListener('keydown', handle);
+        window.addEventListener('keydown', handleKeydown);
         return () => {
-            window.removeEventListener('keydown', handle);
+            window.removeEventListener('keydown', handleKeydown);
         };
-    }, [handleswap]);
+    }, [handleSwap]);
 
     return (
         <>
@@ -88,7 +83,7 @@ function Input() {
 
                 </div>
                 <label htmlFor=""
-                className='text-xl '>Currency Convertor</label>
+                    className='text-xl '>Currency Convertor</label>
             </header>
             <div className="flex content-center flex-wrap h-lvh">
                 <div className="flex-wrap flex justify-center flex-col bg-blue-50 p-4 border-2 border-gray-500 rounded-lg w-3/5 m-auto">
@@ -101,18 +96,16 @@ function Input() {
                                 type="number"
                                 className="bg-white p-4 w-4/6 h-3/5 rounded-lg ml-20 mr-6"
                                 value={amount}
-                                onChange={(e) => setamount(e.target.value)}
+                                onChange={(e) => setAmount(e.target.value)}
                             />
                             <div className="flex flex-col gap-3">
-
                                 <select
-                                    className="  border-2 border-blue-200 rounded-lg h-10 w-30 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-blue-300 overflow-y-auto    "
+                                    className="border-2 border-blue-200 rounded-lg h-10 w-30 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-blue-300"
                                     value={selectCurrency}
-
-                                    onChange={(e) => setselectcurrency(e.target.value)}
+                                    onChange={(e) => setSelectCurrency(e.target.value)}
                                 >
                                     {Object.keys(exchangeRates).map((key) => (
-                                        <option key={key} value={key} className='hover:bg-blue-100' size={5}>
+                                        <option key={key} value={key} className="hover:bg-blue-100">
                                             {key}
                                         </option>
                                     ))}
@@ -120,8 +113,8 @@ function Input() {
                             </div>
                         </div>
                         <button
-                            className=" pl-3 pr-3 border-2 border-blue-200 rounded-lg m-auto mt-0 mb-0"
-                            onClick={handleswap}
+                            className="pl-3 pr-3 border-2 border-blue-200 rounded-lg m-auto mt-0 mb-0"
+                            onClick={handleSwap}
                         >
                             Swap
                         </button>
@@ -130,20 +123,18 @@ function Input() {
                             <label htmlFor="">Converted Amount</label>
                             <input
                                 type="number"
-                                className="bg-white p-4 w-4/6 h-3/5 rounded-lg mr-7 "
-                                value={amountvalue}
-                                onChange={(e) => setamountvalue(e.target.value)}
+                                className="bg-white p-4 w-4/6 h-3/5 rounded-lg mr-7"
+                                value={amountValue}
+                                readOnly
                             />
                             <div className="flex flex-col gap-3">
-
                                 <select
-                                    className=" h-10 w-30 border-2 border-blue-200 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring focus:ring-blue-300"
-                                    value={selectCurrencyintoconverted}
-
-                                    onChange={(e) => setselectCurrencyintoconverted(e.target.value)}
+                                    className="h-10 w-30 border-2 border-blue-200 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring focus:ring-blue-300"
+                                    value={selectCurrencyIntoConverted}
+                                    onChange={(e) => setSelectCurrencyIntoConverted(e.target.value)}
                                 >
-                                    {Object.keys(exchangeRates[selectCurrency] || {}).map((key) => (
-                                        <option key={key} value={key} className='hover:bg-blue-100' size={5} >
+                                    {Object.keys(exchangeRates).map((key) => (
+                                        <option key={key} value={key} className="hover:bg-blue-100">
                                             {key}
                                         </option>
                                     ))}

@@ -16,7 +16,7 @@ function Input() {
         const fetchExchangeRates = async () => {
             try {
                 const response = await axios.get(
-                    `http://data.fixer.io/api/latest?access_key=${apiKey}`
+                    `https://data.fixer.io/api/latest?access_key=${apiKey}`
                 );
                 const { rates } = response.data;
 
