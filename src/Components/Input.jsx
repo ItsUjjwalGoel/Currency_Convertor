@@ -3,6 +3,7 @@ import axios from 'axios';
 import GitHub from './Githublogo.png';
 import Linkedin from './Linkedin.png'
 function Input() {
+    const apiKey =f35f5bb94aac00bd1977452adb7b62f1 ;
     const [selectCurrency, setSelectCurrency] = useState('USD');
     const [selectCurrencyIntoConverted, setSelectCurrencyIntoConverted] = useState('EUR');
     const [amount, setAmount] = useState(0);
@@ -14,7 +15,7 @@ function Input() {
         const fetchExchangeRates = async () => {
             try {
                 const response = await axios.get(
-                    'http://data.fixer.io/api/latest?access_key=f35f5bb94aac00bd1977452adb7b62f1'
+                    `http://data.fixer.io/api/latest?access_key=${apikey}`
                 );
                 const { rates } = response.data;
 
